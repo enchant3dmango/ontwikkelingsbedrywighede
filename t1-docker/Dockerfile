@@ -1,5 +1,6 @@
-# Use an official Ubuntu as a base image
-FROM ubuntu:20.04
+# Learning references (https://docs.docker.com/build/building/best-practices/, https://security.stackexchange.com/questions/1687/)
+# Builder stage
+FROM ubuntu:20.04 AS builder
 
 # Set environment variables
 ENV LITECOIN_VERSION=0.21.3
@@ -17,21 +18,29 @@ WORKDIR /tmp
 RUN curl -SLO https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/davidburkett38-key.pgp && \
     gpg --import /tmp/davidburkett38-key.pgp
 
-# Download Litecoin and verify checksum
+# Download and extract Litecoin and verify checksum
 RUN curl -SLO https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/linux/litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz && \
     curl -SLO https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/SHA256SUMS.asc && \
     gpg --verify SHA256SUMS.asc && \
-    grep "litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz" SHA256SUMS.asc | sha256sum -c -
+    grep "litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz" SHA256SUMS.asc | sha256sum -c - && \
+    tar -xzf litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz -C /tmp --strip-components=1 && \
+    ls -a /tmp && \
+    rm /tmp/litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz
 
-# Extract files and clean up
-RUN tar -xzf litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz -C /usr/local --strip-components=1 && \
-    rm litecoin-${LITECOIN_VERSION}-${LITECOIN_PLATFORM}.tar.gz
+# Runtime stage
+FROM alpine:3.20.2 AS runtime
+
+# Install runtime dependencies
+RUN apk add --no-cache ca-certificates
+
+# Copy Litecoin binaries from the build stage
+COPY --from=builder /tmp/bin /usr/local/litecoin/bin
 
 # Set the final working directory
 WORKDIR /opt/litecoin
 
-# Expose Litecoin ports
+# Expose Litecoin ports (https://www.speedguide.net/port.php?port=9333)
 EXPOSE 9332 9333
 
 # Run litecoind
-CMD ["/opt/litecoind"]
+CMD ["/usr/local/bin/litecoind"]
