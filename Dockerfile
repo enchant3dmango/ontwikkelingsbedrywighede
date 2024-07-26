@@ -1,4 +1,4 @@
-# Builder stage
+# Builder stage 
 FROM debian:bullseye-slim AS builder
 
 # Set environment variables
@@ -24,7 +24,7 @@ RUN curl -SLO https://download.litecoin.org/litecoin-${LITECOIN_VERSION}/davidbu
     rm /tmp/SHA256SUMS.asc
 
 # Runtime stage
-FROM debian:bullseye-slim AS runtime
+FROM debian:buster-slim
 
 # Install runtime dependencies
 RUN apt-get update && \
