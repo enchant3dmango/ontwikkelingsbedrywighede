@@ -21,9 +21,12 @@ jobs:
         run: |
           echo "PR_DESCRIPTION=${{ github.event.pull_request.body }}" >> $GITHUB_ENV
           TAG=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=Tag: )\S+')
+          echo "Extracting tag from PR description."
           if [ -z "$TAG" ]; then
+            echo "Tag not found in PR description, defaulting to 'latest'."
             TAG="latest"
           fi
+          echo "Using tag ${TAG}."
           echo "TAG=${TAG}" >> $GITHUB_ENV
       - name: Build and push
         uses: docker/build-push-action@v6
