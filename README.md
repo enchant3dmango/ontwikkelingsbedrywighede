@@ -9,13 +9,13 @@ Ontwikkelingsbedrywighede is Afrikaans which means Development Operations (DevOp
 ...
 
 ### Steps
-#### Build and Test Dockerfile in Local
+#### Build and Run Dockerfile in Local
 ```sh
 # Build 
 docker build -t <image-name>:<tag> --no-cache --progress=plain . 2>&1 | tee docker-build.log
 
 # Run and write log to a file
-docker run --name <container-name> -d <image-name>:<tag> && docker logs -f litecoin > docker-output.log 2>&1
+docker run --name <container-name> -d <image-name>:<tag> && docker logs -f <container-name> > docker-output.log 2>&1
 ```
 Here is the `docker-output.log` snippet:
 ```log
