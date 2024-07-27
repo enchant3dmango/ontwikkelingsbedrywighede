@@ -1,4 +1,4 @@
-name: ontwikkelingsbedrywighede-ci
+name: Ontwikkelingsbedrywighede CI - Dockerfile
 
 on:
   pull_request:
