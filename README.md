@@ -36,6 +36,60 @@ Here is the `docker-output.log` snippet:
 
 Read more in the `docker-output.log` file, or you can just generate it yourself by following the steps above.
 
+#### Dockerfile CI (GitHub Actions)
+Here's a detailed breakdown and documentation for the provided GitHub Actions (`dockerfile-ci.yml`) workflow setup. This CI/CD pipeline is designed to build and push a Docker image to Docker Hub when a pull request is made to the main branch.
+
+##### Trigger
+This workflow triggers on pull requests targeting the main branch:
+```yaml
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Dockerfile'
+```
+##### Jobs
+1. Login to Docker Hub
+This step uses the `docker/login-action@v3` action to log into Docker Hub using credentials stored in GitHub Secrets and Variables.
+```yaml
+- name: Login to Docker Hub
+  uses: docker/login-action@v3
+  with:
+    username: ${{ vars.DOCKERHUB_USERNAME }}
+    password: ${{ secrets.DOCKERHUB_TOKEN }}
+```
+2. This step sets up Docker Buildx, which allows for advanced build features like multi-platform builds.
+```yaml
+- name: Set up Docker Buildx
+  uses: docker/setup-buildx-action@v3
+```
+3. This step extracts a tag from the pull request description using a regular expression. If no tag is found, it defaults to latest.
+
+```yaml
+- name: Extract tag from PR description
+  run: |
+    echo "PR_DESCRIPTION=${{ github.event.pull_request.body }}" >> $GITHUB_ENV
+    TAG=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=Tag: )\S+')
+    echo "Extracting tag from PR description."
+    if [ -z "$TAG" ]; then
+    echo "Tag not found in PR description, defaulting to 'latest'."
+    TAG="latest"
+    fi
+    echo "Using tag ${TAG}."
+    echo "TAG=${TAG}" >> $GITHUB_ENV
+```
+4. This step builds the Docker image and pushes it to Docker Hub using the `docker/build-push-action@v6` action. The tag for the image is set based on the value extracted from the PR description.
+```yaml
+- name: Build and push
+  uses: docker/build-push-action@v6
+  with:
+    push: true
+    tags: ${{ vars.DOCKERHUB_USERNAME }}/litecoin:${{ env.TAG }}
+```
+
+#### Terraform
+
+
 ## Learning References
 - https://docs.docker.com/build/building/best-practices/
 - https://www.speedguide.net/port.php?port=9333
