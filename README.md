@@ -6,7 +6,10 @@ Ontwikkelingsbedrywighede is Afrikaans which means Development Operations (DevOp
 ## Setup
 
 ### Prerequisites
-...
+- Terraform (1.9.2)
+- AWS CLI (2.17.11)
+- Python (3.8)
+- Docker (27.0.3)
 
 ### Steps
 #### Build and Run Dockerfile in Local
