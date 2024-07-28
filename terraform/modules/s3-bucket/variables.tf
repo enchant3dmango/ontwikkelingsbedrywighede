@@ -29,25 +29,25 @@ variable "iam_policy_name" {
 variable "iam_group_name" {
   description = "The name of the IAM group"
   type        = string
-  default     = "group"
+  default     = "s3-group"
 }
 
 variable "iam_user_name" {
   description = "The name of the IAM user"
   type        = string
-  default     = "user"
+  default     = "s3-user"
 }
 
 variable "iam_role_name" {
   description = "The name of the IAM role"
   type        = string
-  default     = "role"
+  default     = "s3-role"
 }
 
 variable "iam_role_policy_name" {
   description = "The name of the IAM role policy"
   type        = string
-  default     = "role-policy"
+  default     = "s3-role-policy"
 }
 
 variable "iam_assume_role_service" {
