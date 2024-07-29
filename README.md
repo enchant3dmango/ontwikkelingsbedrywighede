@@ -1,7 +1,7 @@
 # Ontwikkelingsbedrywighede
 
 ## Background
-Ontwikkelingsbedrywighede is Afrikaans which means Development Operations (DevOps), I randomly chose Afrikaans, the purpose only to make the repository name unique but also to tell others that I'm learning DevOps, even though none of my friends understand it. I'll document what I've learned at the end of this document after I'm done with this project.
+Ontwikkelingsbedrywighede is Afrikaans which means Development Operations (DevOps), I randomly chose Afrikaans, the purpose only to make the repository name unique but also to tell others that I'm learning DevOps, even though none of my followers understand it.
 
 ## Setup
 
@@ -103,8 +103,8 @@ Kindly check the custom S3 module in **terraform/modules/s3-bucket** first.
 ##### How to Test the Lambda Function?
 1. After building the infrastructure, create two folders in the bucket, namely `source` and `destination`.
 2. Upload any file (e.g. the Dockerfile in this repository) to the `source` folder in the bucket.
-3. Ah, there you go!
-
+3. The S3 bucket notifications will trigger the lambda function, then the lambda function will move the file from `source` to `destination` directory within the bucket.
+4. Ah, there you go!
 
 ## Learning References
 - https://docs.docker.com/build/building/best-practices/
