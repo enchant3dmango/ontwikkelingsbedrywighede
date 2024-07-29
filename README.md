@@ -66,7 +66,7 @@ This step uses the `docker/login-action@v3` action to log into Docker Hub using 
 - name: Set up Docker Buildx
   uses: docker/setup-buildx-action@v3
 ```
-3. This step extracts a tag from the pull request description using a regular expression. If no tag is found, it defaults to latest.
+3. This step extracts a tag from the pull request description using a regular expression. If no tag is found, it defaults to `latest`.
 
 ```yaml
 - name: Extract tag from PR description
@@ -93,17 +93,17 @@ This step uses the `docker/login-action@v3` action to log into Docker Hub using 
 #### Terraform
 ##### How to Build the Infrastructure?
 Kindly check the custom S3 module in **terraform/modules/s3-bucket** first.
-1. Make sure you already have AWS secret key and access key on your local directory.
+1. Ensure you already have the AWS secret key and access key in your local directory.
 2. Create a profile in your AWS config and credentials file then adjust the variable `aws_profile` and other variables as you need in `variables.tf`.
 3. Navigate to terraform directory.
 4. Run `terraform init` to initialize all terraform resources.
-5. Run `terraform plan -out=plan.tfplan` to create execution plan.
+5. Run `terraform plan -out=plan.tfplan` to create an execution plan.
 6. Run `terraform apply "plan.tfplan"` to apply the execution plan.
 7. Run `terraform show` to inspect the current state.
 ##### How to Test the Lambda Function?
-1. After building the infrastructure, create two folders in the bucket, namely `source` and `destination`.
+1. After building the infrastructure, create two folders in the bucket: `source` and `destination`.
 2. Upload any file (e.g. the Dockerfile in this repository) to the `source` folder in the bucket.
-3. The S3 bucket notifications will trigger the lambda function, then the lambda function will move the file from `source` to `destination` directory within the bucket.
+3. The S3 bucket notifications will trigger the lambda function, and then the lambda function will move the file from the `source` to the `destination` directory within the bucket.
 4. Ah, there you go!
 
 ## Learning References
