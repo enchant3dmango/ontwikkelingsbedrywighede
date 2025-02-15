@@ -3,8 +3,8 @@ module "ob_s3" {
   aws_region              = var.aws_region
   s3_bucket_name          = var.s3_bucket_name
   s3_bucket_force_destroy = true
-  prefix                  = var.prefix_ob
-  suffix                  = var.suffix_dev
+  prefix                  = var.prefix
+  suffix                  = var.suffix
   iam_assume_role_service = "lambda.amazonaws.com"
 }
 
@@ -28,11 +28,11 @@ module "ob_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "7.7.0"
 
-  function_name      = "${var.prefix_ob}-${var.lambda_function_name}-${var.suffix_dev}"
+  function_name      = "${var.prefix}-${var.lambda_function_name}-${var.suffix}"
   description        = "My awesome Ontwikkelingsbedrywighede (ob) handler"
   handler            = "lambda_function.lambda_handler"
   runtime            = "python3.8"
-  role_name          = "${var.prefix_ob}-${var.lambda_role_name}-${var.suffix_dev}"
+  role_name          = "${var.prefix}-${var.lambda_role_name}-${var.suffix}"
   attach_policy_json = true
   policy_json = jsonencode({
     Version = "2012-10-17",

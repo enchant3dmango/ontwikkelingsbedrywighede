@@ -1,0 +1,7 @@
+aws_region           = ""
+aws_profile          = ""
+s3_bucket_name       = ""
+lambda_function_name = ""
+lambda_role_name     = ""
+prefix               = ""
+suffix               = ""
