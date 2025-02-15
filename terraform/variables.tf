@@ -23,13 +23,13 @@ variable "lambda_role_name" {
   default     = "lambda-role"
 }
 
-variable "prefix_ob" {
+variable "prefix" {
   description = "Prefix to apply to resource names"
   type        = string
   default     = "ob"
 }
 
-variable "suffix_dev" {
+variable "suffix" {
   description = "Suffix to apply to resource names"
   type        = string
   default     = "dev"
