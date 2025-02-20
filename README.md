@@ -93,19 +93,18 @@ This step uses the `docker/login-action@v3` action to log into Docker Hub using 
     ```
 
 #### Part 2. AWS Lambda & Terraform
-##### Terraform
-###### How to Build the Infrastructure?
+##### How to Build the Infrastructure?
 Kindly check the custom S3 module in **terraform/modules/s3-bucket** first.
 1. Ensure you already have the AWS secret key and access key in your local directory.
 2. Create a profile in your AWS config and credentials file.
 3. Navigate to terraform directory.
-4. Create a `.tfvars` file in the terraform directory using the `.tfvars.template`. Then adjust the variable `aws_profile` and other variables as you need.
+4. Create a `.tfvars` file in the terraform directory using the `.tfvars.template`. Then adjust the variable `aws_profile`, `s3_bucket_name`, and other variables as you need.
 5. Run `terraform init` to initialize all terraform resources.
 6. Run `terraform plan -var-file=.tfvars -out=plan.tfplan` to create an execution plan.
 7. Run `terraform apply "plan.tfplan"` to apply the execution plan.
 8. Run `terraform show` to inspect the current state.
 
-###### How to Test the Lambda Function?
+##### How to Test the Lambda Function?
 1. After building the infrastructure, create two folders in the bucket: `source` and `destination`.
 2. Upload any file (e.g. the Dockerfile in this repository) to the `source` folder in the bucket.
 3. The S3 bucket notifications will trigger the lambda function, and then the lambda function will move the file from the `source` to the `destination` directory within the bucket.
