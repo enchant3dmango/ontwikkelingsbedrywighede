@@ -5,12 +5,10 @@ variable "aws_region" {
 
 variable "aws_profile" {
   description = "The project credentials profile"
-  default     = "enchant3dmango"
 }
 
 variable "s3_bucket_name" {
   description = "The S3 bucket name"
-  default     = "emmer"
 }
 
 variable "lambda_function_name" {
