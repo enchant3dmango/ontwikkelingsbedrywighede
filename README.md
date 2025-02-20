@@ -1,7 +1,9 @@
 # Ontwikkelingsbedrywighede
 
 ## Background
-Ontwikkelingsbedrywighede is Afrikaans, which means Development Operations (DevOps), I randomly choose Afrikaans, the purpose is to make the repository name unique and indicate that I'm learning DevOps.
+"Ontwikkelingsbedrywighede" is Afrikaans, which means Development Operations (DevOps), I randomly choose Afrikaans, the purpose is to make the repository name unique and indicate that I'm learning DevOps.
+
+The project is split into two different parts. The first part is for learning to containerize the Litecoin application and create a CI/CD using GitHub Actions. The second part is learning Amazon Web Services (AWS) Lambda and Terraform.
 
 ## Setup & Usage
 ### Prerequisites
@@ -11,9 +13,10 @@ Ontwikkelingsbedrywighede is Afrikaans, which means Development Operations (DevO
 - Docker (27.0.3)
 
 ### Steps
-#### Build and Run Dockerfile in Local
+#### Part 1. Litecoin Containerization & GitHub Actions
+##### Build and Run Dockerfile in Local
 ```sh
-# Build 
+# Build
 docker build -t <image-name>:<tag> --no-cache --progress=plain . 2>&1 | tee docker-build.log
 
 # Run and write log to a file
@@ -38,10 +41,10 @@ Here is the `docker-output.log` snippet:
 
 Read more in the `docker-output.log` file, or you can just generate it yourself by following the steps above.
 
-#### Dockerfile CI (GitHub Actions)
+##### Dockerfile CI (GitHub Actions)
 Here's a detailed breakdown and documentation for the provided GitHub Actions (`dockerfile-ci.yml`) workflow setup. This CI/CD pipeline is designed to build and push a Docker image to Docker Hub when a pull request is made to the main branch.
 
-##### Trigger
+###### Trigger
 This workflow triggers on pull requests targeting the main branch:
 ```yaml
 on:
@@ -50,7 +53,7 @@ on:
     paths:
       - 'Dockerfile'
 ```
-##### Jobs
+###### Jobs
 1. Login to Docker Hub
 This step uses the `docker/login-action@v3` action to log into Docker Hub using credentials stored in GitHub Secrets and Variables.
     ```yaml
@@ -89,11 +92,12 @@ This step uses the `docker/login-action@v3` action to log into Docker Hub using 
         tags: ${{ vars.DOCKERHUB_USERNAME }}/litecoin:${{ env.TAG }}
     ```
 
-#### Terraform
-##### How to Build the Infrastructure?
+#### Part 2. AWS Lambda & Terraform
+##### Terraform
+###### How to Build the Infrastructure?
 Kindly check the custom S3 module in **terraform/modules/s3-bucket** first.
 1. Ensure you already have the AWS secret key and access key in your local directory.
-2. Create a profile in your AWS config and credentials file. 
+2. Create a profile in your AWS config and credentials file.
 3. Navigate to terraform directory.
 4. Create a `.tfvars` file in the terraform directory using the `.tfvars.template`. Then adjust the variable `aws_profile` and other variables as you need.
 5. Run `terraform init` to initialize all terraform resources.
@@ -101,7 +105,7 @@ Kindly check the custom S3 module in **terraform/modules/s3-bucket** first.
 7. Run `terraform apply "plan.tfplan"` to apply the execution plan.
 8. Run `terraform show` to inspect the current state.
 
-##### How to Test the Lambda Function?
+###### How to Test the Lambda Function?
 1. After building the infrastructure, create two folders in the bucket: `source` and `destination`.
 2. Upload any file (e.g. the Dockerfile in this repository) to the `source` folder in the bucket.
 3. The S3 bucket notifications will trigger the lambda function, and then the lambda function will move the file from the `source` to the `destination` directory within the bucket.
